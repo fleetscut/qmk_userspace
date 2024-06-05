@@ -1,95 +1,55 @@
 #include QMK_KEYBOARD_H
+#include "custom.h"
 
 // Each layer gets a name for readability, which is then used in the keymap matrix below.
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.
 // Layer names don't all need to be of the same length, obviously, and you can also skip them
 // entirely and just use numbers.
 
-// Layers
-#define _DHM 0
-#define _FN  1
-#define _NUM 2
-#define _SYM 3
-#define _NAV 4
-#define _SWAY1 5
-#define _SWAY2 6
-#define _SWAY3 7
+typedef struct TapHolds {
+    char            tap_char;
+    uint16_t        hold_code;
+} TapHold;
 
-// Home Row Mods
-#define SHFT_T LSFT_T(KC_T)
-#define CTL_S LCTL_T(KC_S)
-#define ALT_R LALT_T(KC_R)
-#define GUI_A LGUI_T(KC_A)
+TapHold tapholds[] = {
+    { .tap_char = ')',  .hold_code = KC_LSFT },
+    { .tap_char = '~',  .hold_code = KC_LCTL },
+    { .tap_char = '(',  .hold_code = KC_LALT },
+    { .tap_char = '-',  .hold_code = KC_RSFT },
+    { .tap_char = ':',  .hold_code = KC_RCTL },
+    { .tap_char = '+',  .hold_code = KC_RALT },
+};
 
-#define SFT_N RSFT_T(KC_N)
-#define CTL_E RCTL_T(KC_E)
-#define ALT_I RALT_T(KC_I)
-#define GUI_O RGUI_T(KC_O)
-
-// Layer bindings
-#define LTNAV LT(_NAV, KC_SPC)
-#define LTFN LT(_FN, KC_DEL)
-#define LTNUM LT(_NUM, KC_BSPC)
-#define LTSYM LT(_SYM, KC_ENT)
-
-// Sway binds
-#define M0W0 LGUI(KC_0)
-#define M0W1 LGUI(KC_1)
-#define M0W2 LGUI(KC_2)
-#define M0W3 LGUI(KC_3)
-#define M0W4 LGUI(KC_4)
-#define M0W5 LGUI(KC_5)
-#define M0W6 LGUI(KC_6)
-#define M0W7 LGUI(KC_7)
-#define M0W8 LGUI(KC_8)
-#define M0W9 LGUI(KC_9)
-
-#define M1W0 LGUI(LCTL(KC_0))
-#define M1W1 LGUI(LCTL(KC_1))
-#define M1W2 LGUI(LCTL(KC_2))
-#define M1W3 LGUI(LCTL(KC_3))
-#define M1W4 LGUI(LCTL(KC_4))
-#define M1W5 LGUI(LCTL(KC_5))
-#define M1W6 LGUI(LCTL(KC_6))
-#define M1W7 LGUI(LCTL(KC_7))
-#define M1W8 LGUI(LCTL(KC_8))
-#define M1W9 LGUI(LCTL(KC_9))
-
-#define M2W0 LGUI(LALT(KC_0))
-#define M2W1 LGUI(LALT(KC_1))
-#define M2W2 LGUI(LALT(KC_2))
-#define M2W3 LGUI(LALT(KC_3))
-#define M2W4 LGUI(LALT(KC_4))
-#define M2W5 LGUI(LALT(KC_5))
-#define M2W6 LGUI(LALT(KC_6))
-#define M2W7 LGUI(LALT(KC_7))
-#define M2W8 LGUI(LALT(KC_8))
-#define M2W9 LGUI(LALT(KC_9))
-
-#define SCRATCH1 LGUI(LALT(LCTL(KC_1)))
-#define SCRATCH2 LGUI(LALT(LCTL(KC_2)))
-#define SCRATCH3 LGUI(LALT(LCTL(KC_3)))
+enum CustomKeycodes {
+    KC_L1 = SAFE_RANGE,
+    KC_L2,
+    KC_L3,
+    KC_R1,
+    KC_R2,
+    KC_R3,
+    KC_LAST,
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_DHM] = LAYOUT_5x7(
         // left hand
-           M0W0,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5, _______,
+           M0W0, KC_EXLM,   KC_AT, KC_HASH,  KC_DLR, KC_PERC, _______,
            M1W1,    KC_Q,    KC_W,    KC_F,    KC_P,    KC_B, _______,
            M1W0,   GUI_A,   ALT_R,   CTL_S,  SHFT_T,    KC_G, _______,
            M1W2,    KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,
         _______, _______, KC_LEFT,KC_RIGHT,
-                                KC_LALT, KC_ESC,
-                                KC_LCTL,  LTNAV,
-                                KC_LSFT, KC_TAB,
+                                KC_LPRN, KC_ESC,
+                               KC_TILDE,  LTNAV,
+                                KC_RPRN, KC_TAB,
         // right hand
-                         _______,  KC_6,    KC_7,    KC_8,    KC_9,    KC_0, _______,
-                         _______,  KC_J,    KC_L,    KC_U,    KC_Y, KC_QUOT, _______,
-                         _______,  KC_M,   SFT_N,   CTL_E,   ALT_I,   GUI_O, _______,
-                                   KC_K,    KC_H, KC_COMM,  KC_DOT, KC_SLSH, _______,
-                                                  KC_DOWN,   KC_UP, _______, _______,
-             LTFN,  KC_RALT,
-             LTNUM, KC_RCTL,
-             LTSYM, KC_RSFT
+                         _______, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, _______,
+                         _______,    KC_J,    KC_L,    WM_U,    WM_Y,   WM_QT, _______,
+                         _______,    KC_M,   SFT_N,   CTL_E,   ALT_I,   GUI_O, _______,
+                                     KC_K,    KC_H, KC_COMM,  KC_DOT, KC_SLSH, _______,
+                                                    KC_DOWN,   KC_UP, _______, _______,
+             LTFN,    KC_EQL,
+             LTNUM, KC_COLON,
+             LTSYM,  KC_MINS
     ),
     [_FN] = LAYOUT_5x7(
         // left hand
@@ -252,4 +212,54 @@ bool caps_word_press_user(uint16_t keycode) {
         default:
             return false;  // Deactivate Caps Word.
     }
+}
+
+const key_override_t symbol_swap_one = ko_make_basic(MOD_MASK_SHIFT, KC_EXLM, KC_1);
+const key_override_t symbol_swap_two = ko_make_basic(MOD_MASK_SHIFT, KC_AT, KC_2);
+const key_override_t symbol_swap_three = ko_make_basic(MOD_MASK_SHIFT, KC_HASH, KC_3);
+const key_override_t symbol_swap_four = ko_make_basic(MOD_MASK_SHIFT, KC_DLR, KC_4);
+const key_override_t symbol_swap_five = ko_make_basic(MOD_MASK_SHIFT, KC_PERC, KC_5);
+const key_override_t symbol_swap_six = ko_make_basic(MOD_MASK_SHIFT, KC_CIRC, KC_6);
+const key_override_t symbol_swap_seven = ko_make_basic(MOD_MASK_SHIFT, KC_AMPR, KC_7);
+const key_override_t symbol_swap_eight = ko_make_basic(MOD_MASK_SHIFT, KC_ASTR, KC_8);
+const key_override_t symbol_swap_nine = ko_make_basic(MOD_MASK_SHIFT, KC_LPRN, KC_9);
+const key_override_t symbol_swap_zero = ko_make_basic(MOD_MASK_SHIFT, KC_RPRN, KC_0);
+const key_override_t symbol_swap_colon = ko_make_basic(MOD_MASK_SHIFT, KC_COLON, KC_SCLN);
+
+const key_override_t **key_overrides = (const key_override_t *[]){
+    &symbol_swap_one,
+    &symbol_swap_two,
+    &symbol_swap_three,
+    &symbol_swap_four,
+    &symbol_swap_five,
+    &symbol_swap_six,
+    &symbol_swap_seven,
+    &symbol_swap_eight,
+    &symbol_swap_nine,
+    &symbol_swap_zero,
+    &symbol_swap_colon,
+    NULL
+};
+
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record){
+    static uint16_t timer;
+
+    if (SAFE_RANGE <= keycode && keycode < KC_LAST) {
+        TapHold taphold = tapholds[keycode - SAFE_RANGE];
+
+        if (record->event.pressed) {
+            timer = timer_read();
+            register_code(taphold.hold_code);
+        } else {
+            unregister_code(taphold.hold_code);
+            if (timer_elapsed(timer) < TAPPING_TERM) {
+                send_char(taphold.tap_char);
+            }
+        }
+        return false;
+    }
+    return true;
+
+
 }
