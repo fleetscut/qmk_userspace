@@ -37,7 +37,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
            M1W1,    KC_Q,    KC_W,    KC_F,    KC_P,    KC_B, _______,
            M1W0,   GUI_A,   ALT_R,   CTL_S,  SHFT_T,    KC_G, _______,
            M1W2,    KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,
-        _______, _______, KC_LEFT,KC_RIGHT,
+           M0W1,    M1W5, KC_LEFT,KC_RIGHT,
                                 KC_LPRN, KC_ESC,
                                KC_TILDE,  LTNAV,
                                 KC_RPRN, KC_TAB,
@@ -144,7 +144,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // right hand
                           _______, _______, _______, _______, _______, _______, _______,
                           _______, _______, _______, _______, _______, _______, _______,
-                          _______, _______, KC_LEFT, KC_DOWN,   KC_UP,KC_RIGHT, _______,
+                          _______, _______, KC_RSFT, KC_RCTL, KC_RALT, KC_RGUI, _______,
                                    _______, _______, _______, _______, _______, _______,
                                                      _______, _______, _______, _______,
              _______, _______,
@@ -164,7 +164,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // right hand
                           _______, _______, _______, _______, _______, _______, _______,
                           _______, _______, _______, _______, _______, _______, _______,
-                          _______, _______, KC_LEFT, KC_DOWN,   KC_UP,KC_RIGHT, _______,
+                          _______, _______, KC_RSFT, KC_RCTL, KC_RALT, KC_RGUI, _______,
                                    _______, _______, _______, _______, _______, _______,
                                                      _______, _______, _______, _______,
              _______, _______,
@@ -184,7 +184,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // right hand
                           _______, _______, _______, _______, _______, _______, _______,
                           _______, _______, _______, _______, _______, _______, _______,
-                          _______, _______, KC_LEFT, KC_DOWN,   KC_UP,KC_RIGHT, _______,
+                          _______, _______, KC_RSFT, KC_RCTL, KC_RALT, KC_RGUI, _______,
                                    _______, _______, _______, _______, _______, _______,
                                                      _______, _______, _______, _______,
              _______, _______,
@@ -226,7 +226,7 @@ const key_override_t symbol_swap_nine = ko_make_basic(MOD_MASK_SHIFT, KC_LPRN, K
 const key_override_t symbol_swap_zero = ko_make_basic(MOD_MASK_SHIFT, KC_RPRN, KC_0);
 const key_override_t symbol_swap_colon = ko_make_basic(MOD_MASK_SHIFT, KC_COLON, KC_SCLN);
 
-const key_override_t **key_overrides = (const key_override_t *[]){
+const key_override_t *key_overrides[] = {
     &symbol_swap_one,
     &symbol_swap_two,
     &symbol_swap_three,
